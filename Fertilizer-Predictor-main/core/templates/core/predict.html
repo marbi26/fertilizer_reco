@@ -1,0 +1,261 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Predict Now | Smart Fertilizer Prediction System{% endblock %}
+
+{% block extra_head %}
+<!-- SlimSelect CSS -->
+<link href="https://unpkg.com/slim-select@2.8.2/dist/slimselect.css" rel="stylesheet" />
+<style>
+    /* SlimSelect styling override to match our glassmorphism and green agriculture theme */
+    .ss-main {
+        border: 1.5px solid var(--glass-border) !important;
+        border-radius: 12px !important;
+        padding: 8px 12px !important;
+        background-color: #fff !important;
+        font-family: var(--font-body) !important;
+        box-shadow: none !important;
+        transition: var(--transition-smooth) !important;
+    }
+    .ss-main:focus, .ss-main.ss-open {
+        border-color: var(--primary-color) !important;
+        box-shadow: 0 0 0 4px rgba(46, 111, 64, 0.15) !important;
+    }
+    .ss-content {
+        border-radius: 12px !important;
+        border: 1px solid var(--glass-border) !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+        font-family: var(--font-body) !important;
+        margin-top: 5px !important;
+        padding: 5px !important;
+    }
+    .ss-search input {
+        border-radius: 8px !important;
+        border: 1px solid var(--glass-border) !important;
+        padding: 6px 12px !important;
+    }
+    .ss-search input:focus {
+        box-shadow: 0 0 0 3px rgba(46, 111, 64, 0.15) !important;
+        border-color: var(--primary-color) !important;
+    }
+    .ss-option.ss-highlighted, .ss-option:hover {
+        background-color: var(--primary-color) !important;
+        color: #fff !important;
+    }
+    .ss-option {
+        border-radius: 6px !important;
+        padding: 8px 12px !important;
+        transition: var(--transition-smooth) !important;
+    }
+    .ss-optgroup-label {
+        font-family: var(--font-heading) !important;
+        font-weight: 700 !important;
+        color: var(--accent-color) !important;
+        font-size: 0.85rem !important;
+        letter-spacing: 0.5px !important;
+        padding: 8px 12px 4px !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Header Section -->
+<section class="py-5 bg-white text-center" style="background: linear-gradient(180deg, rgba(46,111,64,0.05) 0%, rgba(255,255,255,0) 100%);">
+    <div class="container py-4">
+        <h1 class="display-4 fw-bold text-success font-heading mb-3" data-aos="fade-down">Fertilizer Recommendation</h1>
+        <p class="lead text-muted max-width-600 mx-auto" data-aos="fade-up" data-aos-delay="100">
+            Enter your field's soil nutrient content and environmental metrics. Our AI model will analyze and suggest the optimal fertilizer.
+        </p>
+    </div>
+</section>
+
+<!-- Form Section -->
+<section id="predict-section" class="py-5 bg-white">
+    <div class="container" data-aos="fade-up">
+        <div class="row justify-content-center text-center section-header mb-5">
+            <div class="col-lg-8">
+                <span class="section-subtitle">Analysis Input</span>
+                <h2 class="section-title text-center">Soil & Environmental Parameters</h2>
+                <p class="text-muted">Enter your soil testing metrics below to get an optimized fertilizer recommendation.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="prediction-card position-relative p-4 p-md-5 rounded-4 shadow-sm border border-light">
+                    <!-- Loading Overlay inside the form container -->
+                    <div id="predictLoadingOverlay" class="prediction-loading-overlay">
+                        <div class="spinner-custom"></div>
+                        <h5 class="text-success font-heading fw-bold mt-3">Analyzing Soil Chemistry</h5>
+                        <p class="text-muted small">Running Machine Learning Model...</p>
+                    </div>
+
+                    <form id="predictForm" action="{% url 'core:predict' %}" method="post">
+                        {% csrf_token %}
+                        <div class="row g-4">
+                            <!-- Soil Type -->
+                            <div class="col-lg-3 col-md-6">
+                                <label for="soil_type" class="form-label form-label-custom">Soil Type</label>
+                                <select class="form-select form-control-custom" id="soil_type" name="soil_type" required>
+                                    <option value="" disabled selected>Select Soil Type</option>
+                                    {% for soil in soil_types %}
+                                    <option value="{{ soil }}">{{ soil }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Crop Type -->
+                            <div class="col-lg-3 col-md-6">
+                                <label for="crop_type" class="form-label form-label-custom">Crop Type</label>
+                                <select id="crop_type" name="crop_type" required>
+                                    <option data-placeholder="true"></option>
+                                    {% for category, crops in categorized_crop_types.items %}
+                                    <optgroup label="{{ category }}">
+                                        {% for crop in crops %}
+                                        <option value="{{ crop }}">{{ crop }}</option>
+                                        {% endfor %}
+                                    </optgroup>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Temperature Input -->
+                            <div class="col-lg-3 col-md-6">
+                                <div class="mb-3">
+                                    <label for="temperature" class="form-label form-label-custom">Temperature <span class="text-muted small">(°C)</span></label>
+                                    <input type="number" step="0.1" class="form-control form-control-custom" id="temperature" name="temperature" min="10" max="50" value="28.0" required placeholder="e.g. 28">
+                                    <div class="form-text text-muted" style="font-size: 0.7rem;">Allowed range: 10 to 50 °C</div>
+                                </div>
+                            </div>
+
+                            <!-- Humidity Input -->
+                            <div class="col-lg-3 col-md-6">
+                                <div class="mb-3">
+                                    <label for="humidity" class="form-label form-label-custom">Humidity <span class="text-muted small">(%)</span></label>
+                                    <input type="number" class="form-control form-control-custom" id="humidity" name="humidity" min="10" max="100" value="65" required placeholder="e.g. 65">
+                                    <div class="form-text text-muted" style="font-size: 0.7rem;">Allowed range: 10 to 100 %</div>
+                                </div>
+                            </div>
+
+                            <!-- Soil Moisture Input -->
+                            <div class="col-lg-3 col-md-6">
+                                <div class="mb-3">
+                                    <label for="moisture" class="form-label form-label-custom">Soil Moisture <span class="text-muted small">(%)</span></label>
+                                    <input type="number" class="form-control form-control-custom" id="moisture" name="moisture" min="10" max="100" value="45" required placeholder="e.g. 45">
+                                    <div class="form-text text-muted" style="font-size: 0.7rem;">Allowed range: 10 to 100 %</div>
+                                </div>
+                            </div>
+
+                            <!-- Nitrogen Input -->
+                            <div class="col-lg-3 col-md-6">
+                                <div class="mb-3">
+                                    <label for="nitrogen" class="form-label form-label-custom">Nitrogen (N) <span class="text-muted small">(mg/kg)</span></label>
+                                    <input type="number" class="form-control form-control-custom" id="nitrogen" name="nitrogen" min="0" max="150" value="40" required placeholder="e.g. 40">
+                                    <div class="form-text text-muted" style="font-size: 0.7rem;">Allowed range: 0 to 150 mg/kg</div>
+                                </div>
+                            </div>
+
+                            <!-- Potassium Input -->
+                            <div class="col-lg-3 col-md-6">
+                                <div class="mb-3">
+                                    <label for="potassium" class="form-label form-label-custom">Potassium (K) <span class="text-muted small">(mg/kg)</span></label>
+                                    <input type="number" class="form-control form-control-custom" id="potassium" name="potassium" min="0" max="150" value="40" required placeholder="e.g. 40">
+                                    <div class="form-text text-muted" style="font-size: 0.7rem;">Allowed range: 0 to 150 mg/kg</div>
+                                </div>
+                            </div>
+
+                            <!-- Phosphorus Input -->
+                            <div class="col-lg-3 col-md-6">
+                                <div class="mb-3">
+                                    <label for="phosphorus" class="form-label form-label-custom">Phosphorus (P) <span class="text-muted small">(mg/kg)</span></label>
+                                    <input type="number" class="form-control form-control-custom" id="phosphorus" name="phosphorus" min="0" max="150" value="40" required placeholder="e.g. 40">
+                                    <div class="form-text text-muted" style="font-size: 0.7rem;">Allowed range: 0 to 150 mg/kg</div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="col-12 mt-4 text-center">
+                                <button type="submit" class="btn btn-premium-primary px-5 py-3 me-3">
+                                    <i class="bi bi-cpu-fill me-2"></i>Predict Fertilizer
+                                </button>
+                                <button type="reset" class="btn btn-premium-secondary px-5 py-3">
+                                    <i class="bi bi-arrow-counterclockwise"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Separate Results Section (Displayed below the form upon prediction) -->
+<section id="predictionResult" class="py-5" style="display: none; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(46,111,64,0.03) 100%); border-top: 1px solid var(--glass-border);">
+    <div class="container" data-aos="fade-up">
+        <div class="row justify-content-center text-center section-header mb-5">
+            <div class="col-lg-8">
+                <span class="section-subtitle">Recommendation Result</span>
+                <h2 class="section-title text-center">Recommended Fertilizer</h2>
+                <p class="text-muted">Below are the details and application guidelines for the recommended fertilizer.</p>
+            </div>
+        </div>
+
+        <div class="row g-4 align-items-stretch justify-content-center max-width-1000 mx-auto">
+            <!-- Left Column: Fertilizer Bag Mockup & Confidence Badge -->
+            <div class="col-lg-5">
+                <div class="card border-0 bg-white p-4 rounded-4 shadow-sm h-100 text-center justify-content-center align-items-center">
+                    <span id="resConfidence" class="confidence-badge mb-3">98.5% Confidence</span>
+                    <h3 id="resFertilizerName" class="result-badge mb-4 font-heading" style="font-size: 1.8rem; line-height: 1.2;">Urea</h3>
+                    
+                    <!-- Fertilizer Product Image Preview -->
+                    <div class="text-center p-3 w-100 bg-light rounded-4 border border-light" style="background: linear-gradient(180deg, #ffffff 0%, rgba(46,111,64,0.02) 100%);">
+                        <img id="resFertilizerImg" src="{% static 'core/images/urea.png' %}" alt="Fertilizer Image" class="img-fluid rounded-3" style="max-height: 250px; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.08));">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Recommendation Details (Description, Precautions, Crops) -->
+            <div class="col-lg-7">
+                <div class="card border-0 bg-white p-4 p-md-5 rounded-4 shadow-sm h-100 d-flex flex-column justify-content-between">
+                    <div class="mb-4">
+                        <h5 class="fw-bold text-success font-heading mb-3"><i class="bi bi-file-text me-2"></i>Description</h5>
+                        <p id="resDescription" class="text-muted leading-relaxed mb-0" style="font-size: 0.95rem;">
+                            Urea has the highest nitrogen content of all solid nitrogenous fertilizers.
+                        </p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="fw-bold text-success font-heading mb-3"><i class="bi bi-exclamation-triangle me-2"></i>Precautions & Application</h5>
+                        <ul id="resPrecautions" class="precautions-list ps-0 text-muted mb-0" style="font-size: 0.9rem;">
+                            <!-- Dynamic items -->
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h5 class="fw-bold text-success font-heading mb-3"><i class="bi bi-tree me-2"></i>Suitable Crops</h5>
+                        <div id="resSuitableCrops" class="crops-badges">
+                            <!-- Dynamic badges -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SlimSelect JS -->
+<script src="https://unpkg.com/slim-select@2.8.2/dist/slimselect.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        new SlimSelect({
+            select: '#crop_type',
+            settings: {
+                placeholderText: 'Select Crop Type',
+                searchText: 'Search Crops...',
+                searchHighlight: true
+            }
+        });
+    });
+</script>
+{% endblock %}

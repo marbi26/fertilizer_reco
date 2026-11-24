@@ -1,0 +1,365 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Analysis Workflow | Smart Fertilizer Prediction System{% endblock %}
+
+{% block content %}
+<!-- Header Section -->
+<section class="py-5 bg-white text-center" style="background: linear-gradient(180deg, rgba(46,111,64,0.05) 0%, rgba(255,255,255,0) 100%);">
+    <div class="container py-4">
+        <h1 class="display-4 fw-bold text-success font-heading mb-3" data-aos="fade-down">Machine Learning Analytics</h1>
+        <p class="lead text-muted max-width-600 mx-auto" data-aos="fade-up" data-aos-delay="100">
+            Dive deep into the backend Machine Learning workflow, dataset features, and real-time performance metrics of our predictive engine.
+        </p>
+    </div>
+</section>
+
+<!-- ML Workflow Steps -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="row justify-content-center text-center section-header">
+            <div class="col-lg-7">
+                <span class="section-subtitle" data-aos="fade-up">Methodology</span>
+                <h2 class="section-title text-center" data-aos="fade-up" data-aos-delay="100">Model Training Workflow</h2>
+            </div>
+        </div>
+
+        <div class="row g-4 justify-content-center workflow-row">
+            <!-- Step 1 -->
+            <div class="col-xl-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="workflow-card">
+                    <div class="workflow-step-num">1</div>
+                    <i class="bi bi-database-fill-add text-success fs-2 mb-3 d-block"></i>
+                    <h5 class="fw-bold font-heading small">Dataset Collection</h5>
+                    <p class="text-muted small mb-0">Empirical soil test data collection</p>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="col-xl-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="workflow-card">
+                    <div class="workflow-step-num">2</div>
+                    <i class="bi bi-bezier2 text-success fs-2 mb-3 d-block"></i>
+                    <h5 class="fw-bold font-heading small">Data Cleaning</h5>
+                    <p class="text-muted small mb-0">Imputation, scale checks, filtering</p>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="col-xl-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="workflow-card">
+                    <div class="workflow-step-num">3</div>
+                    <i class="bi bi-filter-square-fill text-success fs-2 mb-3 d-block"></i>
+                    <h5 class="fw-bold font-heading small">Feature Engineering</h5>
+                    <p class="text-muted small mb-0">Encoding soil/crop categories</p>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="col-xl-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="workflow-card">
+                    <div class="workflow-step-num">4</div>
+                    <i class="bi bi-gear-fill text-success fs-2 mb-3 d-block"></i>
+                    <h5 class="fw-bold font-heading small">Model Training</h5>
+                    <p class="text-muted small mb-0">Fitting Random Forest classifier</p>
+                </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="col-xl-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="500">
+                <div class="workflow-card">
+                    <div class="workflow-step-num">5</div>
+                    <i class="bi bi-lightning-charge-fill text-success fs-2 mb-3 d-block"></i>
+                    <h5 class="fw-bold font-heading small">Prediction</h5>
+                    <p class="text-muted small mb-0">Evaluating test data probabilities</p>
+                </div>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="col-xl-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="600">
+                <div class="workflow-card">
+                    <div class="workflow-step-num">6</div>
+                    <i class="bi bi-bookmark-star-fill text-success fs-2 mb-3 d-block"></i>
+                    <h5 class="fw-bold font-heading small">Recommendation</h5>
+                    <p class="text-muted small mb-0">Formulating precautions & tips</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Dataset Features Table -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center text-center section-header">
+            <div class="col-lg-7">
+                <span class="section-subtitle" data-aos="fade-up">Variables</span>
+                <h2 class="section-title text-center" data-aos="fade-up" data-aos-delay="100">Dataset Information</h2>
+                <p class="text-muted mt-2" data-aos="fade-up" data-aos-delay="200">
+                    The model utilizes 8 distinct physical inputs to predict the target chemical fertilizer class.
+                </p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10" data-aos="fade-up">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-success text-success-dark">
+                                <tr>
+                                    <th scope="col" style="padding: 15px 20px;">Feature Name</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Unit / Range</th>
+                                    <th scope="col">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold text-success" style="padding: 15px 20px;"><i class="bi bi-circle-fill fs-6 me-2"></i>Nitrogen (N)</td>
+                                    <td><span class="badge bg-secondary-subtle text-dark">Numerical</span></td>
+                                    <td>0 - 150 mg/kg</td>
+                                    <td>Primary nutrient key to chlorophyll production and foliage growth.</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success" style="padding: 15px 20px;"><i class="bi bi-circle-fill fs-6 me-2"></i>Phosphorus (P)</td>
+                                    <td><span class="badge bg-secondary-subtle text-dark">Numerical</span></td>
+                                    <td>0 - 150 mg/kg</td>
+                                    <td>Primary nutrient vital for root structure development, flowering, and seeding.</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success" style="padding: 15px 20px;"><i class="bi bi-circle-fill fs-6 me-2"></i>Potassium (K)</td>
+                                    <td><span class="badge bg-secondary-subtle text-dark">Numerical</span></td>
+                                    <td>0 - 150 mg/kg</td>
+                                    <td>Primary nutrient key for enzyme activation, water absorption, and disease resistance.</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success" style="padding: 15px 20px;"><i class="bi bi-thermometer-half fs-6 me-2"></i>Temperature</td>
+                                    <td><span class="badge bg-secondary-subtle text-dark">Numerical</span></td>
+                                    <td>10°C - 50°C</td>
+                                    <td>Ambient field temperature affecting plant metabolic activity.</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success" style="padding: 15px 20px;"><i class="bi bi-moisture fs-6 me-2"></i>Humidity</td>
+                                    <td><span class="badge bg-secondary-subtle text-dark">Numerical</span></td>
+                                    <td>10% - 100%</td>
+                                    <td>Atmospheric humidity level influencing transpiration rates.</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success" style="padding: 15px 20px;"><i class="bi bi-water fs-6 me-2"></i>Moisture</td>
+                                    <td><span class="badge bg-secondary-subtle text-dark">Numerical</span></td>
+                                    <td>10% - 100%</td>
+                                    <td>Soil water retention ratio measuring moisture density.</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success" style="padding: 15px 20px;"><i class="bi bi-globe fs-6 me-2"></i>Soil Type</td>
+                                    <td><span class="badge bg-primary-subtle text-primary">Categorical</span></td>
+                                    <td>5 classes</td>
+                                    <td>Sandy, Loamy, Black, Red, or Clayey soil classification.</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success" style="padding: 15px 20px;"><i class="bi bi-tree-fill fs-6 me-2"></i>Crop Type</td>
+                                    <td><span class="badge bg-primary-subtle text-primary">Categorical</span></td>
+                                    <td>11 classes</td>
+                                    <td>The plant species currently sown in the field (e.g. Paddy, Wheat, Cotton).</td>
+                                </tr>
+                                <tr class="table-active border-top border-2">
+                                    <td class="fw-bold text-success-dark" style="padding: 15px 20px;"><i class="bi bi-flag-fill fs-6 me-2"></i>Recommended Fertilizer</td>
+                                    <td><span class="badge bg-success text-white">Target</span></td>
+                                    <td>7 classes</td>
+                                    <td>The optimal output fertilizer (Urea, DAP, MOP, or custom NPK blend).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ML Analytics Visualizations -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="row justify-content-center text-center section-header">
+            <div class="col-lg-7">
+                <span class="section-subtitle" data-aos="fade-up">Charts</span>
+                <h2 class="section-title text-center" data-aos="fade-up" data-aos-delay="100">Model Performance Visuals</h2>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Feature Importance Chart -->
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="card h-100 border-0 shadow-sm p-4 rounded-4">
+                    <h4 class="fw-bold text-success font-heading mb-3"><i class="bi bi-bar-chart-fill me-2"></i>Feature Importances</h4>
+                    <p class="text-muted small">This chart represents which soil/environmental features are most critical in making predictions. N, P, and K hold the highest weights as expected.</p>
+                    <div class="chart-container-custom">
+                        <canvas id="featureImportanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model Accuracy Details -->
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="card h-100 border-0 shadow-sm p-4 rounded-4 text-center justify-content-center align-items-center">
+                    <h4 class="fw-bold text-success font-heading mb-2"><i class="bi bi-cpu-fill me-2"></i>Prediction Model Details</h4>
+                    <p class="text-muted small max-width-400">Our model uses ensemble learning (Random Forest) to prevent overfitting and ensure maximum robustness across all soil types.</p>
+                    
+                    <!-- Circular Accuracy Indicator -->
+                    <div class="position-relative my-4" style="width: 160px; height: 160px;">
+                        <svg class="w-100 h-100" viewBox="0 0 36 36">
+                            <path class="text-light" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="text-success" stroke-dasharray="{{ accuracy_dash }}, 100" stroke-width="3" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        </svg>
+                        <div class="position-absolute top-50 start-50 translate-middle text-center">
+                            <span class="fs-2 fw-extrabold text-success font-heading block leading-none">{{ accuracy_pct }}</span>
+                            <span class="text-muted d-block" style="font-size: 0.75rem;">Accuracy</span>
+                        </div>
+                    </div>
+
+                    <div class="row g-2 w-100 mt-2">
+                        <div class="col-6">
+                            <div class="p-3 bg-light rounded-3 text-start">
+                                <h6 class="text-muted small mb-1">Algorithm</h6>
+                                <span class="fw-bold text-dark font-heading">Random Forest</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 bg-light rounded-3 text-start">
+                                <h6 class="text-muted small mb-1">Total Dataset</h6>
+                                <span class="fw-bold text-dark font-heading">1,200 Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confusion Matrix Heatmap Placeholder -->
+            <div class="col-lg-12" data-aos="fade-up">
+                <div class="card border-0 shadow-sm p-4 rounded-4 mt-3">
+                    <h4 class="fw-bold text-success font-heading mb-2"><i class="bi bi-grid-3x3-gap-fill me-2"></i>Model Confusion Matrix Heatmap</h4>
+                    <p class="text-muted small">The matrix evaluates misclassifications. Columns represent predicted classes, and rows represent actual classes. Correct predictions lie along the primary diagonal (highlighted in solid green).</p>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center align-middle mt-3 mb-0" style="min-width: 700px;">
+                            <thead>
+                                <tr class="table-secondary">
+                                    <th style="width: 15%; font-size: 0.85rem;">Actual \ Predicted</th>
+                                    {% for label in fertilizers %}
+                                    <th style="font-size: 0.8rem; font-weight: 600;">{{ label }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in confusion_matrix %}
+                                <tr>
+                                    {% with outer_index=forloop.counter0 %}
+                                    <!-- Actual label -->
+                                    <td class="fw-bold text-dark small" style="background-color: #f8f9fa;">
+                                        {% for label in fertilizers %}
+                                            {% if forloop.counter0 == outer_index %}{{ label }}{% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    
+                                    <!-- Matrix values -->
+                                    {% for value in row %}
+                                        {% with inner_index=forloop.counter0 %}
+                                            {% if outer_index == inner_index %}
+                                                <!-- Correct prediction cell (high values -> dark green) -->
+                                                <td class="text-white fw-bold" style="background-color: var(--primary-color); font-size: 0.9rem;">
+                                                    {{ value }}
+                                                </td>
+                                            {% else %}
+                                                <!-- Incorrect prediction cell (should be close to 0) -->
+                                                <td class="text-muted" style="background-color: {% if value > 0 %}rgba(216, 138, 78, 0.25){% else %}rgba(46, 111, 64, 0.02){% endif %}; font-size: 0.85rem;">
+                                                    {{ value }}
+                                                </td>
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endfor %}
+                                    {% endwith %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Chart.js and Custom Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Feature Importance Chart
+        const ctxImportance = document.getElementById('featureImportanceChart').getContext('2d');
+        const featuresList = {{ features|safe }};
+        const importancesList = {{ feature_importances|safe }};
+
+        new Chart(ctxImportance, {
+            type: 'bar',
+            data: {
+                labels: featuresList,
+                datasets: [{
+                    label: 'Feature Weight',
+                    data: importancesList,
+                    backgroundColor: [
+                        'rgba(46, 111, 64, 0.8)',
+                        'rgba(46, 111, 64, 0.8)',
+                        'rgba(46, 111, 64, 0.8)',
+                        'rgba(129, 199, 132, 0.8)',
+                        'rgba(129, 199, 132, 0.8)',
+                        'rgba(129, 199, 132, 0.8)',
+                        'rgba(216, 138, 78, 0.8)',
+                        'rgba(216, 138, 78, 0.8)'
+                    ],
+                    borderColor: [
+                        '#1b4d27', '#1b4d27', '#1b4d27', '#81c784', '#81c784', '#81c784', '#d88a4e', '#d88a4e'
+                    ],
+                    borderWidth: 1.5,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Inter',
+                                size: 11
+                            }
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Outfit',
+                                size: 12,
+                                weight: '600'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
